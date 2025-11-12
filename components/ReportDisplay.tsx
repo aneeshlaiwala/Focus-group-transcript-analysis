@@ -103,7 +103,7 @@ export const ReportDisplay: React.FC<ReportDisplayProps> = ({ report, isLoading,
       <ReportSection title="Archetype Split">
         <Commentary objective={report.archetypeMapping.commentary.objective} insights={report.archetypeMapping.commentary.keyInsights} howToRead={report.archetypeMapping.commentary.howToRead} />
          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="h-80"><ArchetypePieChart data={report.archetypeMapping.data} /></div>
+            <div id="archetype-chart-container" className="h-80"><ArchetypePieChart data={report.archetypeMapping.data} /></div>
             <div className="space-y-4">
                 {report.archetypeMapping.data.map(archetype => (
                     <div key={archetype.name}>
@@ -118,7 +118,7 @@ export const ReportDisplay: React.FC<ReportDisplayProps> = ({ report, isLoading,
       
       <ReportSection title="Emotion Trajectory">
         <Commentary objective={report.emotionTrajectory.commentary.objective} insights={report.emotionTrajectory.commentary.keyInsights} howToRead={report.emotionTrajectory.commentary.howToRead} />
-        <div className="h-80 w-full"><EmotionTimelineChart data={report.emotionTrajectory.data} /></div>
+        <div id="emotion-chart-container" className="h-80 w-full"><EmotionTimelineChart data={report.emotionTrajectory.data} /></div>
       </ReportSection>
 
       <ReportSection title="Top 5 Themes">
