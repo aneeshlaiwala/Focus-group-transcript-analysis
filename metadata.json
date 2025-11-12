@@ -1,0 +1,5 @@
+{
+  "name": "Q-Lens AI",
+  "description": "An advanced tool to analyze focus group transcripts using Gemini. It provides deep, moment-by-moment language intelligence, transforming raw text into a dashboard of actionable insights, emotional trajectories, and cognitive patterns.",
+  "requestFramePermissions": []
+}
