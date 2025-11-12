@@ -11,9 +11,10 @@ export const InsightGraphChart: React.FC<InsightGraphChartProps> = ({ data }) =>
   const height = 300;
   const centerX = width / 2;
   const centerY = height / 2;
-  const radius = Math.min(centerX, centerY) * 0.8;
+  // Reduce radius to give more space for text labels
+  const radius = Math.min(centerX, centerY) * 0.7;
   const nodeRadius = 8;
-  const fontSize = 12;
+  const fontSize = 11; // Slightly reduce font size for better fit
 
   if (!themes || themes.length === 0) {
     return <div className="text-brand-text-medium text-center">No graph data to display.</div>;
@@ -83,18 +84,50 @@ export const InsightGraphChart: React.FC<InsightGraphChartProps> = ({ data }) =>
       {nodes.map((node, i) => {
           const angle = i * angleStep - Math.PI / 2;
           const textOffset = calculateTextOffset(angle);
+          const textAnchor = calculateTextAnchor(angle);
+
+          // Word wrapping logic
+          const words = node.id.split(' ');
+          const lines: string[] = [];
+          if (words.length > 0) {
+            let currentLine = words[0];
+            const maxLineLength = 20; // Max characters per line
+    
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                if ((currentLine + ' ' + word).length > maxLineLength) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine += ' ' + word;
+                }
+            }
+            lines.push(currentLine);
+          }
+
+          const lineSpacing = fontSize + 2;
+          const verticalAdjust = -((lines.length - 1) * lineSpacing) / 2;
+
           return (
             <g key={node.id}>
                 <circle cx={node.x} cy={node.y} r={nodeRadius} fill="#38BDF8" />
                 <text
                     x={node.x + textOffset.x}
-                    y={node.y + textOffset.y}
-                    textAnchor={calculateTextAnchor(angle)}
+                    y={node.y + textOffset.y + verticalAdjust}
+                    textAnchor={textAnchor}
                     fill="#F9FAFB"
                     fontSize={fontSize}
                     style={{ pointerEvents: 'none' }}
                 >
-                    {node.id}
+                    {lines.map((line, index) => (
+                        <tspan
+                            key={index}
+                            x={node.x + textOffset.x}
+                            dy={index === 0 ? 0 : lineSpacing}
+                        >
+                            {line}
+                        </tspan>
+                    ))}
                 </text>
             </g>
           );
